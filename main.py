@@ -48,6 +48,7 @@ def numParseThousands(number_in):
             return(numParseHundreds(thousands_place) + ' thousand ' + numParseHundreds(rem_number))
     
 def num2word(number_in):
+    #Converts number into its equivalent number words
     if(number_in == 0):
         #Parser for zero
         print("zero")
@@ -65,6 +66,7 @@ def num2word(number_in):
         print("Input out of range!(0-1000000)")
 
 def word2num(string_in):
+    #Converts number words into its equivalent number
     small_numbers = {'one': 1,'two': 2,'three': 3,'four': 4,'five': 5,'six': 6,'seven': 7,'eight': 8,'nine': 9,'ten': 10,
     'eleven': 11,'twelve': 12,'thirteen': 13,'fourteen': 14,'fifteen': 15,'sixteen': 16,'seventeen': 17,'eighteen': 18,'nineteen': 19,
     'twenty': 20,'thirty': 30,'forty': 40,'fifty': 50,'sixty': 60,'seventy': 70,'eighty': 80,'ninety': 90}
@@ -96,30 +98,42 @@ def word2num(string_in):
     except NameError:
         return("Wrong String Input!")
         
-        
+def word2curr(string_in, currency):
+    #Converts a number word into a currency
+    return(currency + str(word2num(string_in)))
+
 def selectFunction(choice):
     #Function that routes to the function chosen
-    firstArgument = input("Enter First Argument: ")
-
-    if choice == 1:
-        inputArg = eval(firstArgument)
-        num2word(inputArg)
-        
-    elif choice == 2:
-        print(word2num(firstArgument))
-
-    elif choice == 3:
-        print("Not Implemented Yet!")
-        start()
-        
-    elif choice ==  4:
-        print("Not Implemented Yet!")
-        start()
-    elif choice ==  5:
+    if choice == 5:
         print("Good bye!")
     else:
-        print("Wrong Input!")
-        start()
+        firstArgument = input("Enter First Argument: ")
+
+        if choice == 1:
+            inputArg = eval(firstArgument)
+            num2word(inputArg)
+            
+        elif choice == 2:
+            print(word2num(firstArgument))
+
+        elif choice == 3:
+            currency_list = ['JPY', 'PHP', 'USD']
+            secondArgument = input("Enter Currency: ")
+            if(len(secondArgument) > 3):
+                print("Not a valid Currency!")
+                start()
+            else:
+                if(secondArgument in currency_list != None):
+                    print(word2curr(firstArgument, secondArgument))
+                else:
+                    print("Currency not in supported list!")
+                    start()
+        elif choice ==  4:
+            print("Not Implemented Yet!")
+            start()
+        else:
+            print("Wrong Input!")
+            start()
         
 def start():
     #Provides interface for the functions
