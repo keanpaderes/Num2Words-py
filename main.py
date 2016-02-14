@@ -2,6 +2,8 @@
 #CMSC128 AB-3L, 2013-32091
 #REFERENCES
 # BASIC numToWord function - http://stackoverflow.com/questions/19504350/how-to-convert-numbers-to-words-in-python
+# text2num in python - https://github.com/ghewgill/text2num/blob/master/text2num.py
+import re
 
 def numParseTens(number_in):
     #Defined Dictionary and List of number strings
@@ -46,7 +48,6 @@ def numParseThousands(number_in):
             return(numParseHundreds(thousands_place) + ' thousand ' + numParseHundreds(rem_number))
     
 def num2word(number_in):
-
     if(number_in == 0):
         #Parser for zero
         print("zero")
@@ -62,7 +63,39 @@ def num2word(number_in):
     else:
         #Error Catching for out of range
         print("Input out of range!(0-1000000)")
-    
+
+def word2num(string_in):
+    small_numbers = {'one': 1,'two': 2,'three': 3,'four': 4,'five': 5,'six': 6,'seven': 7,'eight': 8,'nine': 9,'ten': 10,
+    'eleven': 11,'twelve': 12,'thirteen': 13,'fourteen': 14,'fifteen': 15,'sixteen': 16,'seventeen': 17,'eighteen': 18,'nineteen': 19,
+    'twenty': 20,'thirty': 30,'forty': 40,'fifty': 50,'sixty': 60,'seventy': 70,'eighty': 80,'ninety': 90}
+    try:
+        if(string_in == 'zero'):
+            #Parser for zero
+            return(0)
+        elif(string_in == 'one million'):
+            #Parser for one million
+            return(1000000)
+        else:
+            string_list = re.split(r"[\s-]+", string_in) #Regex that splits the string with delimiters space and '-'
+            ret_int = 0
+            curr_hndrd = 0
+            for num in string_list:
+                curr = small_numbers.get(num, None)
+                if curr is not None:
+                    curr_hndrd += curr
+                elif(num == "hundred") and (curr_hndrd != 0):
+                    curr_hndrd *= 100
+                else:
+                    if(num == "thousand"):
+                        ret_int += curr_hndrd * 1000
+                        curr_hndrd = 0
+                    else:
+                        #Error Catching for out of range
+                        raise NameError('errInput')
+            return(ret_int + curr_hndrd)
+    except NameError:
+        return("Wrong String Input!")
+        
         
 def selectFunction(choice):
     #Function that routes to the function chosen
@@ -73,9 +106,8 @@ def selectFunction(choice):
         num2word(inputArg)
         
     elif choice == 2:
-        print("Not Implemented Yet!")
-        start()
-        
+        print(word2num(firstArgument))
+
     elif choice == 3:
         print("Not Implemented Yet!")
         start()
