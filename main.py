@@ -1,8 +1,10 @@
 #PROGRAMMING ASSIGNMENT #1 - Number/Word Parser
+#Irvin Kean Paulus T. Paderes
 #CMSC128 AB-3L, 2013-32091
 #REFERENCES
 # BASIC numToWord function - http://stackoverflow.com/questions/19504350/how-to-convert-numbers-to-words-in-python
 # text2num in python - https://github.com/ghewgill/text2num/blob/master/text2num.py
+# Adding character at certain index -http://stackoverflow.com/questions/5254445/add-string-in-a-certain-position-in-python
 import re
 
 def numParseTens(number_in):
@@ -96,11 +98,15 @@ def word2num(string_in):
                         raise NameError('errInput')
             return(ret_int + curr_hndrd)
     except NameError:
-        return("Wrong String Input!")
+        return("Wrong Input!")
         
 def word2curr(string_in, currency):
     #Converts a number word into a currency
     return(currency + str(word2num(string_in)))
+
+def numDelimited(string_in, char_delimiter, num_of_places):
+    #Delimits the string with the given character by its places
+    print(string_in[:-num_of_places] + char_delimiter + string_in[-num_of_places:])
 
 def selectFunction(choice):
     #Function that routes to the function chosen
@@ -110,11 +116,19 @@ def selectFunction(choice):
         firstArgument = input("Enter First Argument: ")
 
         if choice == 1:
-            inputArg = eval(firstArgument)
-            num2word(inputArg)
-            
+            try:
+                inputArg = eval(firstArgument)
+                num2word(inputArg)
+            except NameError:
+                print("Wrong Input!")
+                start()
         elif choice == 2:
-            print(word2num(firstArgument))
+            output = word2num(firstArgument)
+            if(output == "Wrong Input!"):
+                print(output)
+                start()
+            else:
+                print(output)
 
         elif choice == 3:
             currency_list = ['JPY', 'PHP', 'USD']
@@ -129,8 +143,17 @@ def selectFunction(choice):
                     print("Currency not in supported list!")
                     start()
         elif choice ==  4:
-            print("Not Implemented Yet!")
-            start()
+            secondArgument = input("Enter delimiter character: ")
+            if(len(secondArgument) > 1):
+                print("Only characters are allowed to be delimiters!")
+                start()
+            else:
+                thirdArgument = eval(input("Enter length: "))
+                if (thirdArgument > 7):
+                    print("Length exceeds the length of the first argument!")
+                    start()
+                else:
+                    numDelimited(firstArgument, secondArgument, thirdArgument)
         else:
             print("Wrong Input!")
             start()
